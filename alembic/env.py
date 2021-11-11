@@ -6,17 +6,14 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
-from shop.containers import find_modules
-from shop.settings import DatabaseSettings
-from shop.db import metadata
+from src.shop.containers import find_modules
+from src.shop.settings import DatabaseSettings
+from src.shop.db import metadata
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 config = context.config
 
 fileConfig(config.config_file_name)
-
-# we need to import all models so alembic can detect changes
-list(find_modules(sys.modules["shop"], set()))
 
 try:
     settings = DatabaseSettings()

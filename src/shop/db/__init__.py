@@ -1,6 +1,6 @@
 from sqlalchemy import MetaData
 from sqlalchemy.orm import registry
-from sqlalchemy.orm.decl_api import declarative_base
+from sqlalchemy.orm.decl_api import DeclarativeMeta
 
 convention = {
     "ix": "ix_%(column_0_label)s",
@@ -9,6 +9,12 @@ convention = {
     "fk": "fk_%(table_name)s_%(column_0_name)s",
     "pk": "pk_%(table_name)s",
 }
-
 metadata = MetaData(naming_convention=convention)
-Base = declarative_base(metadata=metadata)
+mapper_registry = registry(metadata)
+
+
+class Base(metaclass=DeclarativeMeta):
+    __abstract__ = True
+
+    registry = mapper_registry
+    metadata = mapper_registry.metadata

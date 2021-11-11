@@ -1,7 +1,0 @@
-setup.py
-shop.egg-info/PKG-INFO
-shop.egg-info/SOURCES.txt
-shop.egg-info/dependency_links.txt
-shop.egg-info/top_level.txt
-shop/__init__.py
-shop/uow.py

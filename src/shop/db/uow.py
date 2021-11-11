@@ -2,11 +2,16 @@ from typing import Protocol, Optional, Any
 
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
+from src.shop.orders.database import (
+    DatabaseOrderRepository,
+    DatabaseOrderLineRepository,
+)
 from src.shop.uow import BaseUnitOfWork
+from src.shop.products.database import DatabaseProductRepository
 
 
 class SessionFactory(Protocol):
-    async def __call__(self) -> AsyncSession:
+    def __call__(self) -> AsyncSession:
         """Create a session"""
 
 
@@ -22,7 +27,10 @@ class SQLAlchemyUnitOfWork(BaseUnitOfWork):
         if self._session is not None:
             raise RuntimeError("UoW is already working")
 
-        self._session = session = await self._session_factory()
+        self._session = session = self._session_factory()
+        self.product_repo = DatabaseProductRepository(self._session)
+        self.order_repo = DatabaseOrderRepository(self._session)
+        self.order_line_repo = DatabaseOrderLineRepository(self._session)
         await session.__aenter__()
 
         return self

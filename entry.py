@@ -3,8 +3,7 @@ import asyncio
 import logging
 import sys
 
-from aiohttp import web
-from shop.web.app import create_app
+from src.shop.web.app import create_app
 
 try:
     import uvloop
@@ -47,4 +46,6 @@ if args.revision:
 app = create_app()
 
 if __name__ == "__main__":
-    web.run_app(app)
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)  # type: ignore
+

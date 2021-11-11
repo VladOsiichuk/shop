@@ -1,11 +1,14 @@
 from typing import Callable
+from fastapi import FastAPI
+from src.shop.containers import bootstrap
+from src.shop.containers import Container
+from src.shop.products.views import router as product_router
+from src.shop.orders.views import router as order_router
 
-from aiohttp.web import Application
-from shop.containers import  bootstrap
-from shop.containers import Container
 
-
-async def create_app(bootstrap: Callable[[], Container] = bootstrap) -> Application:
-    container = bootstrap()
-    app = Application(debug=container.config.debug)
+def create_app(container_bootstrap: Callable[[], Container] = bootstrap) -> FastAPI:
+    container = container_bootstrap()
+    app = FastAPI(debug=container.config.debug)
+    app.include_router(router=product_router, prefix="/api/products")
+    app.include_router(router=order_router, prefix="/api/orders")
     return app

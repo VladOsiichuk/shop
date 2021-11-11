@@ -1,6 +1,8 @@
+from typing import Optional, List
+
 import sqlalchemy as sa
-from shop.db import Base
-from shop.products.interfaces import ProductRepository, Product as DomainProduct
+from src.shop.db import Base
+from src.shop.products.interfaces import ProductRepository, Product as DomainProduct
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -11,7 +13,7 @@ class Product(Base):
     name = sa.Column(sa.String)
     price = sa.Column(sa.Integer, default=1)
     discount = sa.Column(sa.Integer, default=0)
-    category = sa.Column(sa.String, default="")
+    category = sa.Column(sa.String, nullable=True, default=None)
 
 
 class DatabaseProductRepository(ProductRepository):
@@ -32,7 +34,23 @@ class DatabaseProductRepository(ProductRepository):
         return [DomainProduct.from_orm(db_obj) for db_obj in products]
 
     async def persist(self, product: DomainProduct) -> DomainProduct:
-        query = sa.insert(Product).values(**product.dict()).returning(Product)
+        query = (
+            sa.insert(Product)
+            .values(**product.dict(exclude_unset=True))
+            .returning(Product)
+        )
         db_object = (await self.db.execute(query)).fetchone()
         return DomainProduct.from_orm(db_object)
 
+    async def get_by_name(self, name: str) -> Optional[Product]:
+        query = sa.select(Product).where(Product.name == name)
+        product = (await self.db.execute(query)).scalars().one_or_none()
+        if not product:
+            return None
+        return DomainProduct.from_orm(product)
+
+    async def list(self) -> List[DomainProduct]:
+        query = sa.select(Product)
+        products = (await self.db.execute(query)).scalars().all()
+
+        return [DomainProduct.from_orm(db_obj) for db_obj in products]

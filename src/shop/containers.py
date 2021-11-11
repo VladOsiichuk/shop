@@ -7,8 +7,10 @@ from typing import Iterator, Set
 from dependency_injector.containers import DeclarativeContainer
 from dependency_injector.providers import Configuration, Container as ContainerProvider
 
-from shop.db.container import SqlAlchemyContainer
-from shop.settings import Settings
+from src.shop.db.container import SqlAlchemyContainer
+from src.shop.orders.containers import OrderCasesCasesContainer
+from src.shop.settings import Settings
+from src.shop.products.containers import ProductCasesContainer
 
 
 class Container(DeclarativeContainer):
@@ -19,14 +21,12 @@ class Container(DeclarativeContainer):
         url=config.db.url,
         debug=config.db.debug,
     )
+    product_use_cases = ContainerProvider(ProductCasesContainer, uow=db.uow)
+    order_use_cases = ContainerProvider(OrderCasesCasesContainer, uow=db.uow)
 
 
 def find_modules(package: ModuleType, excluded: Set[str]) -> Iterator[ModuleType]:
     """Helper to run imports
-
-    Args:
-        package: package to process
-        excluded: excluded modules
 
     Returns:
         Iterator with modules
@@ -48,7 +48,7 @@ def bootstrap() -> Container:
     container.config.from_pydantic(Settings())
 
     excluded = set(container.config.do_not_wire())
-    modules = list(find_modules(sys.modules["shop"], excluded))
+    modules = list(find_modules(sys.modules["src"], excluded))
 
     container.wire(modules=modules)
     container.init_resources()
