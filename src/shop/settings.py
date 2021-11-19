@@ -1,6 +1,6 @@
 from typing import List
 
-from pydantic import BaseSettings, Field, PostgresDsn
+from pydantic import BaseSettings, Field, PostgresDsn, validator
 
 
 class DatabaseSettings(BaseSettings):

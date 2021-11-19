@@ -5,12 +5,13 @@ from types import ModuleType
 from typing import Iterator, Set
 
 from dependency_injector.containers import DeclarativeContainer
-from dependency_injector.providers import Configuration, Container as ContainerProvider
+from dependency_injector.providers import Configuration
+from dependency_injector.providers import Container as ContainerProvider
 
 from src.shop.db.container import SqlAlchemyContainer
 from src.shop.orders.containers import OrderCasesCasesContainer
-from src.shop.settings import Settings
 from src.shop.products.containers import ProductCasesContainer
+from src.shop.settings import Settings
 
 
 class Container(DeclarativeContainer):

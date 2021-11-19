@@ -1,15 +1,13 @@
-from typing import Optional, List
+from typing import List, Optional
 
 import sqlalchemy as sa
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship
+
 from src.shop.db import Base
-from src.shop.orders.interfaces import (
-    OrderRepository,
-    Order as DomainOrder,
-    OrderLineRepository,
-    OrderLine as DomainOrderLine,
-)
+from src.shop.orders.interfaces import Order as DomainOrder
+from src.shop.orders.interfaces import OrderLine as DomainOrderLine
+from src.shop.orders.interfaces import OrderLineRepository, OrderRepository
 
 
 class Order(Base):

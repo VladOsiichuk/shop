@@ -1,12 +1,12 @@
 from typing import Optional
 
 from src.shop.orders.interfaces import (
+    AddOrderLineUseCase,
+    CheckoutOrderService,
+    CheckoutOrderUseCase,
     CreateNewOrderUseCase,
     Order,
-    CheckoutOrderUseCase,
     OrderDoesNotExists,
-    CheckoutOrderService,
-    AddOrderLineUseCase,
     OrderLine,
 )
 from src.shop.products.interfaces import ProductDoesNotExists
@@ -45,6 +45,7 @@ class CheckoutOrderUseCaseImpl(CheckoutOrderUseCase):
             order = await self.checkout_service.checkout(
                 order=order, receiver_phone_number=receiver_phone_number
             )
+            await uow.commit()
         return order
 
 

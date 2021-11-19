@@ -1,8 +1,8 @@
 from abc import ABCMeta, abstractmethod
-
-from src.shop.orders.interfaces import OrderRepository, OrderLineRepository
-from src.shop.products.interfaces import ProductRepository
 from typing import Any
+
+from src.shop.orders.interfaces import OrderLineRepository, OrderRepository
+from src.shop.products.interfaces import ProductRepository
 
 
 class BaseUnitOfWork(metaclass=ABCMeta):

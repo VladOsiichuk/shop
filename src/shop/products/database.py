@@ -1,9 +1,11 @@
-from typing import Optional, List
+from typing import List, Optional
 
 import sqlalchemy as sa
-from src.shop.db import Base
-from src.shop.products.interfaces import ProductRepository, Product as DomainProduct
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.shop.db import Base
+from src.shop.products.interfaces import Product as DomainProduct
+from src.shop.products.interfaces import ProductRepository
 
 
 class Product(Base):
@@ -35,9 +37,7 @@ class DatabaseProductRepository(ProductRepository):
 
     async def persist(self, product: DomainProduct) -> DomainProduct:
         query = (
-            sa.insert(Product)
-            .values(**product.dict(exclude_unset=True))
-            .returning(Product)
+            sa.insert(Product).values(**product.dict(exclude={"id"})).returning(Product)
         )
         db_object = (await self.db.execute(query)).fetchone()
         return DomainProduct.from_orm(db_object)

@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
-from typing import Optional, Protocol, List
+from typing import List, Optional, Protocol
 
-from pydantic import Field, BaseModel
+from pydantic import BaseModel, Field
 
 from src.shop.interfaces import DomainError
 
@@ -10,6 +10,9 @@ class Order(BaseModel):
     id: Optional[int]
     status: Optional[str] = Field(default="new")
     receiver_phone_number: Optional[str] = None
+
+    def __eq__(self, other: "Order"):
+        return self.id == other.id
 
     class Config:
         orm_mode = True

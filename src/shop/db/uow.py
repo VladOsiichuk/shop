@@ -1,13 +1,13 @@
-from typing import Protocol, Optional, Any
+from typing import Any, Optional, Protocol
 
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.shop.orders.database import (
-    DatabaseOrderRepository,
     DatabaseOrderLineRepository,
+    DatabaseOrderRepository,
 )
-from src.shop.uow import BaseUnitOfWork
 from src.shop.products.database import DatabaseProductRepository
+from src.shop.uow import BaseUnitOfWork
 
 
 class SessionFactory(Protocol):

@@ -1,9 +1,9 @@
-from dependency_injector.wiring import inject, Provide
+from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, HTTPException
 
 from src.shop.orders.interfaces import (
-    CreateNewOrderUseCase,
     AddOrderLineUseCase,
+    CreateNewOrderUseCase,
     OrderDoesNotExists,
 )
 from src.shop.orders.schemas import (

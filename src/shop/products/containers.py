@@ -1,7 +1,6 @@
 from dependency_injector.containers import DeclarativeContainer
 from dependency_injector.providers import Dependency, Singleton
 
-from src.shop.uow import BaseUnitOfWork
 from src.shop.products.interfaces import (
     AddProductUseCase,
     ViewAllProductsUseCase,
@@ -12,6 +11,7 @@ from src.shop.products.use_cases import (
     ViewAllProductsUseCaseImpl,
     ViewCategoryProductsImpl,
 )
+from src.shop.uow import BaseUnitOfWork
 
 
 class ProductCasesContainer(DeclarativeContainer):

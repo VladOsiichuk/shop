@@ -1,7 +1,6 @@
 from dependency_injector.containers import DeclarativeContainer
 from dependency_injector.providers import Dependency, Singleton
-
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 from src.shop.db.uow import SQLAlchemyUnitOfWork

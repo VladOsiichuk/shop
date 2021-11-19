@@ -1,7 +1,8 @@
-from typing import Optional, List, Protocol
+from abc import ABCMeta, abstractmethod
+from typing import List, Optional, Protocol
 
 from pydantic import BaseModel
-from abc import ABCMeta, abstractmethod
+
 from src.shop.interfaces import DomainError
 
 
@@ -15,6 +16,16 @@ class Product(BaseModel):
     @property
     def discount_price(self):
         return round(self.price - (self.price / 100 * self.discount))
+
+    def __eq__(self, other):
+        return self.id == other.id
+
+    def dict(self, *args, **kwargs):
+        if not self.id:
+            exclude = kwargs.get("exclude") or set()
+            exclude.add("id")
+            kwargs["exclude"] = exclude
+        return super().dict(*args, **kwargs)
 
     class Config:
         orm_mode = True

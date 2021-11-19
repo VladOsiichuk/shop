@@ -1,9 +1,10 @@
 from typing import Callable
+
 from fastapi import FastAPI
-from src.shop.containers import bootstrap
-from src.shop.containers import Container
-from src.shop.products.views import router as product_router
+
+from src.shop.containers import Container, bootstrap
 from src.shop.orders.views import router as order_router
+from src.shop.products.views import router as product_router
 
 
 def create_app(container_bootstrap: Callable[[], Container] = bootstrap) -> FastAPI:

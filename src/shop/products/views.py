@@ -1,6 +1,8 @@
-from starlette.exceptions import HTTPException
-from dependency_injector.wiring import inject, Provide
+from dependency_injector.wiring import Provide, inject
 from fastapi import Depends
+from fastapi.routing import APIRouter
+from starlette import status
+from starlette.exceptions import HTTPException
 
 from src.shop.products.interfaces import (
     AddProductUseCase,
@@ -9,17 +11,19 @@ from src.shop.products.interfaces import (
     ViewCategoryProducts,
 )
 from src.shop.products.schemas import (
-    ProductResponseSchema,
     AddProductRequestSchema,
     ProductListResponseSchema,
+    ProductResponseSchema,
 )
-from fastapi.routing import APIRouter
-
 
 router = APIRouter()
 
 
-@router.post(response_model=ProductResponseSchema, path="/add/")
+@router.post(
+    response_model=ProductResponseSchema,
+    path="/add/",
+    status_code=status.HTTP_201_CREATED,
+)
 @inject
 async def add_product(
     data: AddProductRequestSchema,
@@ -33,7 +37,7 @@ async def add_product(
             name=data["name"],
             category=data.get("category"),
             price=data.get("price"),
-            discount=data.get("discount"),
+            discount=data.get("discount", 0),
         )
     except ProductAlreadyExistsError as err:
         raise HTTPException(status_code=400, detail=str(err))

@@ -2,16 +2,16 @@ from dependency_injector.containers import DeclarativeContainer
 from dependency_injector.providers import Dependency, Singleton
 
 from src.shop.orders.interfaces import (
-    CheckoutOrderService,
-    CreateNewOrderUseCase,
-    CheckoutOrderUseCase,
     AddOrderLineUseCase,
+    CheckoutOrderService,
+    CheckoutOrderUseCase,
+    CreateNewOrderUseCase,
 )
 from src.shop.orders.services import CheckoutOrderServiceImpl
 from src.shop.orders.use_cases import (
-    CreateNewOrderUseCaseImpl,
-    CheckoutOrderUseCaseImpl,
     AddOrderLineUseCaseImpl,
+    CheckoutOrderUseCaseImpl,
+    CreateNewOrderUseCaseImpl,
 )
 from src.shop.uow import BaseUnitOfWork
 

@@ -1,12 +1,13 @@
-from typing import Optional, List
-from src.shop.uow import BaseUnitOfWork
+from typing import List, Optional
+
 from src.shop.products.interfaces import (
     AddProductUseCase,
+    Product,
     ProductAlreadyExistsError,
     ViewAllProductsUseCase,
     ViewCategoryProducts,
 )
-from src.shop.products.interfaces import Product
+from src.shop.uow import BaseUnitOfWork
 
 
 class AddProductUseCaseImpl(AddProductUseCase):
@@ -41,9 +42,11 @@ class ViewAllProductsUseCaseImpl(ViewAllProductsUseCase):
     def __init__(self, uow: BaseUnitOfWork) -> None:
         self.uow = uow
 
-    async def __call__(self):
+    async def __call__(self) -> List[Product]:
         async with self.uow as uow:
-            return await uow.product_repo.list()
+            res = await uow.product_repo.list()
+            await uow.commit()
+            return res
 
 
 class ViewCategoryProductsImpl(ViewCategoryProducts):

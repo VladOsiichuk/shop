@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -15,7 +15,7 @@ class AddProductRequestSchema(BaseModel):
     name: str
     category: str
     price: int
-    discount: Optional[int]
+    discount: Optional[int] = 0
 
 
 class ProductListResponseSchema(BaseModel):
